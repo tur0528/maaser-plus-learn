@@ -1,0 +1,27 @@
+{
+  "_note": "Entities for the Base44 community app (forum + story submissions). Create them in Base44 (Data → entities) or paste this to the Base44 builder prompt. Access rules: NO public read/write on any entity. Only the backend functions (asServiceRole) read/write; Or moderates in the Base44 Data screen.",
+  "ForumTopic": {
+    "title":       { "type": "string", "required": true },
+    "body":        { "type": "string", "required": true },
+    "author":      { "type": "string", "description": "nickname or empty (= בעילום שם)" },
+    "status":      { "type": "string", "enum": ["pending", "approved", "rejected"], "default": "pending" },
+    "reply_count": { "type": "number", "default": 0 },
+    "ip_hash":     { "type": "string", "description": "salted SHA-256 of IP, for rate limiting only. never shown" }
+  },
+  "ForumReply": {
+    "topic_id": { "type": "string", "required": true },
+    "body":     { "type": "string", "required": true },
+    "author":   { "type": "string" },
+    "status":   { "type": "string", "enum": ["pending", "approved", "rejected"], "default": "pending" },
+    "ip_hash":  { "type": "string" }
+  },
+  "StorySubmission": {
+    "title":     { "type": "string", "required": true },
+    "body":      { "type": "string", "required": true },
+    "name":      { "type": "string" },
+    "anonymous": { "type": "boolean", "default": false },
+    "contact":   { "type": "string", "description": "optional email, never published" },
+    "status":    { "type": "string", "enum": ["new", "approved", "published", "rejected"], "default": "new" },
+    "ip_hash":   { "type": "string" }
+  }
+}

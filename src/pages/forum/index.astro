@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { enabled } from '../../scripts/community';
+---
+<Base title="התייעצויות" description="פורום פתוח על מעשר, נתינה ומס: שואלים, משתפים ועונים זה לזה. בלי הרשמה, וכל הודעה עוברת אישור לפני פרסום.">
+  <PageHead eyebrow="התייעצויות" title="שואלים, משתפים, עונים" lead="פורום פתוח לכל מי שנותן מעשר או רוצה להתחיל. לא צריך חשבון. כל הודעה נבדקת לפני שהיא מתפרסמת." />
+  <section class="listing"><div class="wrap">
+    {!enabled && <p class="integration-note" style="margin-bottom:30px"><b>מצב תצוגה:</b> הפורום עוד לא מחובר לשרת, ולכן מוצגים נושאים <b>לדוגמה</b>. החיבור מוגדר ב־<code>src/data/site.json → community_api_base</code> (ראו <code>integrations/base44/README.md</code>).</p>}
+    <div class="forum-grid">
+      <div>
+        <h2 class="sr">נושאים</h2>
+        <ul class="topics" id="topics" aria-live="polite"><li class="empty">טוען נושאים…</li></ul>
+      </div>
+      <div style="display:grid;gap:28px">
+        <form class="form" id="topic-form" novalidate>
+          <h2>נושא חדש</h2>
+          <div class="field"><label for="t-title">כותרת</label><input id="t-title" name="title" type="text" required minlength="6" maxlength="120" /></div>
+          <div class="field"><label for="t-body">תוכן ההודעה</label><textarea id="t-body" name="body" required minlength="10" maxlength="4000"></textarea></div>
+          <div class="field"><label for="t-name">כינוי <span class="hint">(לא חובה. בלי כינוי יופיע "בעילום שם")</span></label><input id="t-name" name="name" type="text" maxlength="40" /></div>
+          <div class="hp" aria-hidden="true"><label>אתר<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
+          <label class="check"><input type="checkbox" name="consent" value="1" required />קראתי את כללי הפורום ואת <a href="/privacy/" style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
+          <div><button class="btn btn-em" type="submit">שליחה לאישור</button></div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <aside class="forum-rules" id="rules">
+          <h2>כללי הפורום</h2>
+          <ul>
+            <li>כל הודעה עוברת אישור לפני פרסום, בדרך כלל תוך יום־יומיים.</li>
+            <li>מדברים בכבוד ובלשון נקייה.</li>
+            <li>בלי פרטים אישיים: לא מספרי טלפון, תעודות זהות או סכומים מזהים.</li>
+            <li>תשובות בפורום הן שיתוף ולא פסיקה. בשאלה הלכתית למעשה פונים לרב, ובשאלת מס לאיש מקצוע.</li>
+            <li>בלי פרסומות וגיוסי כספים.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </div></section>
+  <script>
+    import { enabled, call, esc, heDate, wireForm } from '../../scripts/community';
+    import demo from '../../data/forum-examples.json';
+    const ul = document.getElementById('topics')!;
+    const render = (topics: any[], isDemo: boolean) => {
+      if (!topics.length) { ul.innerHTML = '<li class="empty">עדיין אין נושאים. אפשר לפתוח את הראשון.</li>'; return; }
+      ul.innerHTML = topics.map((t) => `<li class="topic"><h3><a href="/forum/topic/?id=${encodeURIComponent(t.id)}">${esc(t.title)}</a></h3>
+        <p>${esc(String(t.body).slice(0, 160))}${String(t.body).length > 160 ? '…' : ''}</p>
+        <div class="tm">${isDemo ? '<span class="ex-badge">תוכן לדוגמה</span>' : ''}<span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span><span>${t.reply_count ?? 0} תגובות</span></div></li>`).join('');
+    };
+    if (enabled) {
+      call<{ topics: any[] }>('forumList', {}).then((d) => render(d.topics || [], false)).catch(() => { ul.innerHTML = '<li class="empty">לא הצלחנו לטעון את הנושאים. נסו לרענן.</li>'; });
+    } else render(demo.topics, true);
+    wireForm(document.getElementById('topic-form') as HTMLFormElement, 'forumCreateTopic', (fd) => ({ title: fd.get('title'), body: fd.get('body'), name: fd.get('name'), consent: fd.get('consent') === '1' }), 'תודה! הנושא התקבל ויופיע אחרי אישור.');
+  </script>
+</Base>

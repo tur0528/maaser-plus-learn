@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import { getCollection } from 'astro:content';
+import { byDateDesc, visible } from '../../lib';
+const items = (await getCollection('articles')).filter(visible).sort(byDateDesc);
+---
+<Base title="מאמרים" description="מאמרים על מעשר כספים: הלכות בשפה פשוטה, החזר מס על תרומות לפי סעיף 46, ומדריכים מעשיים.">
+  <PageHead eyebrow="מאמרים" title="ללמוד על מעשר, צעד אחר צעד" lead="הלכה, מס ומדריכים. כל מאמר מבוסס על מקורות, ומאמרים הלכתיים עוברים בדיקה של רב." />
+  <section class="listing"><div class="wrap"><ArticleList items={items} /></div></section>
+</Base>

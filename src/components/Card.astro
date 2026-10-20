@@ -1,0 +1,11 @@
+---
+import ExampleBadge from './ExampleBadge.astro';
+interface Props { href: string; title: string; summary: string; meta?: string; tag?: string; example?: boolean; }
+const { href, title, summary, meta, tag, example } = Astro.props;
+---
+<article class="card">
+  <div class="card-top">{tag && <span class="tag">{tag}</span>}{example && <ExampleBadge />}</div>
+  <h3><a href={href}>{title}</a></h3>
+  <p>{summary}</p>
+  <div class="card-foot">{meta && <span class="meta">{meta}</span>}<span class="go" aria-hidden="true">לקריאה</span></div>
+</article>

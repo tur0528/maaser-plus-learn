@@ -1,0 +1,113 @@
+/* ==========================================================================
+   מעשר+ · אתר התוכן · design tokens: FINAL (direction A, approved by Or)
+   Light, warm parchment, deep emerald and gold. Reference: reference/home-A.html
+   Fonts (load once):
+   https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700&display=swap
+   ========================================================================== */
+:root{
+  /* --- Ink (text) --- */
+  --ink:#15211C;          /* headings, body text            15.1:1 on paper */
+  --ink-2:#4A5650;        /* secondary text, leads           7.0:1 on paper */
+  --meta:#66706A;         /* meta / captions, 16px+ only     4.7:1 on paper */
+
+  /* --- Paper (backgrounds) --- */
+  --paper:#F8F4EA;        /* page background */
+  --paper-2:#F2EBDB;      /* alternate sections */
+  --paper-hero-top:#FAF6EC; --paper-hero-bottom:#F4EDDD;
+  --card:#FFFDF8;         /* cards / raised surfaces */
+  --card-warm-end:#F3EBD8;/* end of the app-card gradient */
+
+  /* --- Emerald (identity, primary) --- */
+  --em:#065F46;           /* primary: CTA, emphasis word, links, icons (7.0:1 on paper) */
+  --em-2:#047857;         /* hover */
+  --em-hi:#0A6F52;        /* top of button gradient */
+  --em-band:#0B6B50;      /* highlight of emerald band */
+  --em-deep:#04382A;      /* deep end of emerald band */
+  --em-slice:#059669;     /* the slice in icon A / motif only */
+
+  /* --- Gold (warm accent) --- */
+  --gold:#B08A3E;         /* hairlines, ornaments, outline letters, check icons (decorative, not text) */
+  --gold-l:#D9B86A;       /* gold on dark (decorative) */
+  --gold-text:#7A5A16;    /* gold text on paper (eyebrows, citations)  5.8:1 */
+  --gold-on-emerald:#EBD79E; /* gold text on the emerald band  >=4.5:1 */
+  --gold-glow:rgba(233,207,134,.32);
+  --hair:rgba(176,138,62,.35);   /* standard 1px gold hairline */
+  --hair-strong:rgba(176,138,62,.5);
+
+  /* --- On dark (emerald band / footer) --- */
+  --cream:#F6EFDF;        /* text on emerald band */
+  --footer-bg:#0C1C17;
+  --footer-text:#C9C3B3;  /* 10:1 */
+  --footer-head:#F6F0E2;
+  --footer-meta:#8F9A93;  /* 6.0:1 */
+  --footer-rule:rgba(217,184,106,.22);
+
+  /* --- Typography --- */
+  --font-display:'Frank Ruhl Libre', 'David Libre', serif;
+  --font-body:'Assistant', system-ui, sans-serif;
+  --fs-hero:118px;   --lh-hero:.98;  /* weight 500, letter-spacing -.02em; mobile 68px */
+  --fs-h2:62px;      --lh-h2:1.1;    /* weight 500, -.015em; mobile 42px */
+  --fs-h2-app:60px;                  /* mobile 38px */
+  --fs-h3:38px;      --lh-h3:1.2;    /* tile titles, weight 500; mobile 32px */
+  --fs-quote:76px;   --lh-quote:1.45;/* pasuk, weight 500; mobile 42px */
+  --fs-quote-2:44px;                 /* gemara line; mobile 30px */
+  --fs-lead:23px;    --lh-lead:1.75; /* mobile 19px */
+  --fs-body:19px;    --lh-body:1.75; /* never below 18px */
+  --fs-btn:20px;                     /* weight 700 */
+  --fs-nav:17px;                     /* weight 600 */
+  --fs-eyebrow:15px;                 /* weight 700, letter-spacing .08em, gold-text */
+  --fs-meta:16px;
+
+  /* --- Spacing / layout --- */
+  --container:1240px; --gutter:40px; /* mobile gutter 22px */
+  --section-y:150px;                 /* mobile 80-96px */
+  --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px; --space-5:48px; --space-6:72px; --space-7:96px;
+
+  /* --- Radii --- */
+  --r-frame:28px;   /* hero hairline frame (inset 18px) */
+  --r-card:36px;    /* app card; mobile 28px */
+  --r-logo:12px;    /* logo tile 46px */
+  --r-pill:999px;   /* buttons */
+  --r-phone:52px;   /* phone mockup outer, screen 41px */
+
+  /* --- Shadows --- */
+  --sh-btn:0 1px 0 rgba(255,255,255,.25) inset, 0 10px 24px -8px rgba(6,95,70,.55), 0 0 0 1px rgba(4,56,42,.6);
+  --sh-card:0 0 0 1px rgba(176,138,62,.25), 0 30px 60px -40px rgba(60,40,10,.25);
+  --sh-logo:0 0 0 1px rgba(0,0,0,.06), 0 4px 12px rgba(20,30,25,.08);
+  --sh-phone:0 0 0 1px #2a332f, 0 2px 0 1px #3b4540 inset, 0 40px 80px -30px rgba(10,30,22,.45), 0 20px 40px -20px rgba(10,30,22,.3);
+
+  /* --- Backgrounds --- */
+  --bg-hero:radial-gradient(60% 70% at 22% 40%, rgba(233,207,134,.32), transparent 70%),
+            radial-gradient(50% 60% at 95% 0%, rgba(6,95,70,.07), transparent 70%),
+            linear-gradient(180deg, #FAF6EC, #F4EDDD);
+  --bg-emerald-band:radial-gradient(60% 90% at 50% 0%, #0B6B50 0%, #065F46 35%, #04382A 100%);
+  --bg-app-card:linear-gradient(135deg, #FFFDF7, #F3EBD8);
+  --bg-btn:linear-gradient(180deg, #0A6F52, #065F46);
+  /* paper grain: overlay with opacity .18 + mix-blend-mode:multiply (see .grain) */
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.27  0 0 0 0 0.12  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* --- Reusable primitives (same as the reference page) --- */
+.grain{position:relative}
+.grain::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.18;mix-blend-mode:multiply;pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font:700 var(--fs-eyebrow)/1 var(--font-body);letter-spacing:.08em;color:var(--gold-text)}
+.eyebrow::before{content:"";width:44px;height:1px;background:var(--gold)}
+.eyebrow i{width:6px;height:6px;transform:rotate(45deg);background:var(--gold);display:inline-block}
+.hairline{height:1px;background:var(--hair);border:0}
+.btn-primary{display:inline-flex;align-items:center;gap:14px;font:700 var(--fs-btn)/1.2 var(--font-body);color:#fff;background:var(--bg-btn);border-radius:var(--r-pill);padding:19px 34px 19px 30px;box-shadow:var(--sh-btn)}
+.btn-primary:hover{background:var(--em-2)}
+.btn-primary .ic{width:28px;height:28px;border-radius:8px;background:#fff;display:grid;place-items:center} /* icon A at 24px inside */
+.link-underline{font-weight:700;padding-bottom:4px;border-bottom:1px solid currentColor;color:var(--ink)}
+.outline-letter{font-family:var(--font-display);font-weight:300;color:transparent;-webkit-text-stroke:1px var(--gold)} /* א/ב/ג tile numerals, watermark י */
+
+/* --- Rabbi-review box: PLACEHOLDER component (not in the homepage mockup) --- */
+.rav-box{display:flex;gap:18px;align-items:flex-start;background:var(--card);border:1px solid var(--hair);border-right:4px solid var(--em);border-radius:16px;padding:24px 28px}
+.rav-box .ok{width:44px;height:44px;border-radius:50%;background:rgba(6,95,70,.08);color:var(--em);display:grid;place-items:center;flex:none}
+.rav-box b{font:700 20px/1.4 var(--font-body);color:var(--ink)}
+.rav-box p{font-size:17px;line-height:1.6;color:var(--ink-2);margin-top:4px}
+/* Text: "התוכן ההלכתי נבדק על ידי {שם הרב}" / "תאריך הבדיקה: {תאריך}. בכל שאלה אישית מומלץ להתייעץ עם רב." */
+
+/* --- Source box (inline, inside articles) --- */
+.source-box{background:linear-gradient(135deg,#FBF6EA,#F3EBD8);border:1px solid var(--hair);border-radius:24px;padding:34px 38px}
+.source-box blockquote{font:500 34px/1.5 var(--font-display);color:var(--ink)}
+.source-box cite{font-style:normal;font-size:17px;font-weight:600;color:var(--gold-text)}

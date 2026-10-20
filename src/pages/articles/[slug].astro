@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import RavBox from '../../components/RavBox.astro';
+import AppButton from '../../components/AppButton.astro';
+import ExampleBadge from '../../components/ExampleBadge.astro';
+import { getCollection, render } from 'astro:content';
+import { heDate, ogFor, parseSource, visible } from '../../lib';
+export async function getStaticPaths() {
+  const all = (await getCollection('articles')).filter(visible);
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const ld = { '@context': 'https://schema.org', '@type': 'Article', headline: d.title, description: d.summary, inLanguage: 'he', datePublished: d.date.toISOString(), dateModified: (d.updated ?? d.date).toISOString(), author: { '@type': 'Organization', name: 'מעשר+' }, image: new URL(ogFor('articles', entry.id), Astro.site).toString() };
+---
+<Base title={d.title} description={d.summary} type="article" ogImage={ogFor('articles', entry.id)} published={d.date} noindex={d.example}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)} />
+  <PageHead eyebrow={`מאמרים · ${d.category}`} title={d.title} lead={d.summary}>
+    <div class="meta-row"><span>פורסם: {heDate(d.date)}</span>{d.updated && <span>עודכן: {heDate(d.updated)}</span>}{d.example && <ExampleBadge />}</div>
+  </PageHead>
+  <article class="article"><div class="wrap narrow">
+    <p class="crumbs"><a href="/articles/">מאמרים</a> · {d.category}</p>
+    {d.cover && <img class="cover-img" src={d.cover} alt="" loading="lazy" />}
+    <div class="prose"><Content /></div>
+    {d.halachic_review && <RavBox />}
+    {d.sources.length > 0 && <section class="sources"><h2>מקורות</h2><ol>{d.sources.map((s) => { const p = parseSource(s); return <li>{p.url ? <a href={p.url} rel="noopener">{p.text}</a> : p.text}</li>; })}</ol></section>}
+    <div class="cta-strip"><div><h2>לעשות את החשבון בקלות</h2><p>האפליקציה החינמית מחשבת את המעשר ומרכזת את הקבלות לסעיף 46.</p></div><AppButton label="לאפליקציה" /></div>
+  </div></article>
+</Base>

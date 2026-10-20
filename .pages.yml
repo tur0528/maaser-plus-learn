@@ -1,0 +1,76 @@
+# Pages CMS config (https://pagescms.org/docs/). Or edits content in the browser at https://app.pagescms.org
+media:
+  input: public/media
+  output: /media
+
+content:
+  - name: articles
+    label: מאמרים
+    type: collection
+    path: src/content/articles
+    filename: "{fields.slug}.md"
+    view:
+      fields: [title, category, date, example]
+      primary: title
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: "כותרת", type: string, required: true }
+      - name: slug
+        label: "כתובת העמוד (באנגלית, באותיות קטנות ומקפים, למשל hechzer-mas)"
+        type: string
+        required: true
+        hidden: false
+        pattern: { regex: "^[a-z0-9-]+$", message: "רק אותיות אנגליות קטנות, ספרות ומקפים" }
+      - { name: summary, label: "תקציר קצר (מופיע בכרטיס ובגוגל, עד 2 שורות)", type: text, required: true, options: { maxlength: 220 } }
+      - { name: category, label: "נושא", type: select, required: true, options: { values: ["הלכה", "מס", "מדריכים"] } }
+      - { name: date, label: "תאריך פרסום", type: date, required: true, options: { format: "yyyy-MM-dd" } }
+      - { name: updated, label: "תאריך עדכון (לא חובה)", type: date, options: { format: "yyyy-MM-dd" } }
+      - { name: halachic_review, label: "להציג תיבת \"נבדק על ידי הרב\" (רק אחרי בדיקה אמיתית)", type: boolean, default: false }
+      - { name: sources, label: "מקורות (שורה לכל מקור. לקישור: שם המקור: https://...)", type: string, list: true }
+      - { name: cover, label: "תמונה (לא חובה)", type: image }
+      - { name: example, label: "תוכן לדוגמה (מסמן באתר ומסתיר מגוגל)", type: boolean, default: false }
+      - { name: draft, label: "טיוטה (לא מתפרסם באתר)", type: boolean, default: true }
+      - { name: body, label: "גוף המאמר המלא", type: rich-text, required: true, options: { format: markdown } }
+
+  - name: stories
+    label: סיפורים
+    type: collection
+    path: src/content/stories
+    filename: "{fields.slug}.md"
+    view:
+      fields: [title, author, date, anonymous]
+      primary: title
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: "כותרת", type: string, required: true }
+      - name: slug
+        label: "כתובת העמוד (באנגלית, למשל sipur-1)"
+        type: string
+        required: true
+        pattern: { regex: "^[a-z0-9-]+$", message: "רק אותיות אנגליות קטנות, ספרות ומקפים" }
+      - { name: summary, label: "תקציר קצר (מופיע בכרטיס)", type: text, required: true, options: { maxlength: 220 } }
+      - { name: author, label: "שם הכותב (כפי שיופיע)", type: string }
+      - { name: anonymous, label: "בעילום שם (השם לא יוצג)", type: boolean, default: false }
+      - { name: date, label: "תאריך", type: date, required: true, options: { format: "yyyy-MM-dd" } }
+      - { name: source, label: "מקור כתוב (לסיפור מן המקורות)", type: string }
+      - { name: cover, label: "תמונה (לא חובה)", type: image }
+      - { name: example, label: "תוכן לדוגמה", type: boolean, default: false }
+      - { name: draft, label: "טיוטה (לא מתפרסם)", type: boolean, default: true }
+      - { name: body, label: "הסיפור המלא", type: rich-text, required: true, options: { format: markdown } }
+
+  - name: settings
+    label: הגדרות האתר וניסוחים
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - { name: app_url, label: "כתובת האפליקציה", type: string }
+      - { name: contact_email, label: "דוא״ל ליצירת קשר (מופיע בפרטיות ובנגישות)", type: string }
+      - { name: pending_copy_note, label: "הערה (פנימית)", type: string, readonly: true }
+      - { name: categories_heading, label: "כותרת אזור הנושאים בדף הבית (ממתין לאישור). שורה חדשה = Enter", type: text }
+      - { name: footer_tagline, label: "משפט בפוטר (ממתין לאישור)", type: text }
+      - { name: footer_bottom, label: "שורה תחתונה בפוטר (ממתין לאישור)", type: string }
+      - { name: rav_name, label: "שם הרב בתיבת הבדיקה (להשאיר {שם הרב} עד שיש רב אמיתי)", type: string }
+      - { name: rav_date, label: "תאריך הבדיקה ({תאריך} עד אז)", type: string }
+      - { name: community_api_base, label: "כתובת שרת הקהילה ב־Base44 (לפורום ולסיפורים). ריק = מצב תצוגה", type: string }

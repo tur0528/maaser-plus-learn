@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+---
+<Base title="העמוד לא נמצא" description="העמוד שחיפשתם לא נמצא." noindex={true}>
+  <PageHead eyebrow="404" title="העמוד לא נמצא" lead="אולי הקישור השתנה. אפשר לחזור לדף הבית או למאמרים.">
+    <div class="meta-row"><a class="btn btn-em" href="/">לדף הבית</a><a class="link" href="/articles/">למאמרים</a></div>
+  </PageHead>
+</Base>

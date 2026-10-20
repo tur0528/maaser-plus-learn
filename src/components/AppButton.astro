@@ -1,0 +1,7 @@
+---
+import Icon from './Icon.astro';
+import site from '../data/site.json';
+interface Props { label?: string; variant?: 'em' | 'gold'; }
+const { label = 'לחשב את המעשר שלי באפליקציה', variant = 'em' } = Astro.props;
+---
+<a class={`btn btn-${variant}`} href={site.app_url} rel="noopener"><span class="ic"><Icon name="logo" size={24} /></span>{label}</a>

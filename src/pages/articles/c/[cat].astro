@@ -1,0 +1,14 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHead from '../../../components/PageHead.astro';
+import ArticleList from '../../../components/ArticleList.astro';
+import { getCollection } from 'astro:content';
+import { CATS, byDateDesc, visible } from '../../../lib';
+export function getStaticPaths() { return CATS.map((c) => ({ params: { cat: c.slug }, props: { name: c.name } })); }
+const { cat } = Astro.params; const { name } = Astro.props;
+const items = (await getCollection('articles')).filter(visible).filter((a) => a.data.category === name).sort(byDateDesc);
+---
+<Base title={`מאמרים: ${name}`} description={`מאמרים בנושא ${name} באתר מעשר+.`}>
+  <PageHead eyebrow="מאמרים" title={name} />
+  <section class="listing"><div class="wrap"><ArticleList items={items} current={cat} /></div></section>
+</Base>

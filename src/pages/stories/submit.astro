@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { enabled } from '../../scripts/community';
+---
+<Base title="שליחת סיפור" description="יש לכם סיפור על נתינה, מעשר או צדקה? שלחו אותו. אפשר בעילום שם, ושום דבר לא מתפרסם בלי אישור.">
+  <PageHead eyebrow="סיפורים" title="שליחת סיפור" lead="ספרו לנו על רגע של נתינה. כל סיפור נקרא ונבדק לפני פרסום, ואנחנו עשויים לבצע עריכת לשון קלה. אפשר לבחור לפרסם בעילום שם." />
+  <section class="listing"><div class="wrap narrow">
+    {!enabled && <p class="integration-note"><b>מצב תצוגה:</b> הטופס עוד לא מחובר לשרת. החיבור מוגדר ב־<code>src/data/site.json → community_api_base</code>. ההוראות נמצאות ב־<code>integrations/base44/README.md</code>.</p>}
+    <form class="form" id="story-form" novalidate>
+      <div class="field"><label for="s-title">כותרת הסיפור</label><input id="s-title" name="title" type="text" required maxlength="120" /></div>
+      <div class="field"><label for="s-body">הסיפור <span class="hint">(עד 6,000 תווים)</span></label><textarea id="s-body" name="body" required minlength="80" maxlength="6000"></textarea></div>
+      <div class="field"><label for="s-name">שם לפרסום <span class="hint">(אפשר שם פרטי בלבד)</span></label><input id="s-name" name="name" type="text" maxlength="60" autocomplete="name" /></div>
+      <label class="check"><input type="checkbox" name="anonymous" value="1" />לפרסם בעילום שם. השם לא יופיע באתר.</label>
+      <div class="field"><label for="s-contact">דרך ליצור איתכם קשר <span class="hint">(לא חובה, ולא מתפרסם. רק אם נצטרך לשאול משהו)</span></label><input id="s-contact" name="contact" type="email" maxlength="120" autocomplete="email" /></div>
+      <div class="hp" aria-hidden="true"><label>אתר<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
+      <label class="check"><input type="checkbox" name="consent" value="1" required />אני מאשר/ת שהסיפור שלי, שאני רשאי/ת לשתף אותו, ושמעשר+ רשאי לערוך ולפרסם אותו באתר. קראתי את <a href="/privacy/" style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
+      <div><button class="btn btn-em" type="submit">שליחה לבדיקה</button></div>
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div></section>
+  <script>
+    import { wireForm } from '../../scripts/community';
+    const f = document.getElementById('story-form') as HTMLFormElement;
+    wireForm(f, 'submitStory', (fd) => ({
+      title: fd.get('title'), body: fd.get('body'), name: fd.get('name'),
+      anonymous: fd.get('anonymous') === '1', contact: fd.get('contact'), consent: fd.get('consent') === '1',
+    }), 'תודה! הסיפור התקבל ויעבור בדיקה לפני פרסום.');
+  </script>
+</Base>
