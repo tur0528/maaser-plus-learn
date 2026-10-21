@@ -1,2 +1,2 @@
 import type { APIRoute } from 'astro';
-export const GET: APIRoute = ({ site }) => new Response(`User-agent: *\nAllow: /\nDisallow: /forum/topic/\n\nSitemap: ${new URL('sitemap-index.xml', site)}\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+export const GET: APIRoute = ({ site }) => new Response(`User-agent: *\nAllow: /\nDisallow: ${import.meta.env.BASE_URL.replace(/\/?$/, "/")}forum/topic/\n\nSitemap: ${new URL(import.meta.env.BASE_URL.replace(/\/?$/, "/") + "sitemap-index.xml", site)}\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

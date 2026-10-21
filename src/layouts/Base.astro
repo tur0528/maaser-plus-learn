@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib';
 import '@fontsource/assistant/hebrew-400.css';
 import '@fontsource/assistant/hebrew-600.css';
 import '@fontsource/assistant/hebrew-700.css';
@@ -15,7 +16,7 @@ import Logo from '../components/Logo.astro';
 import site from '../data/site.json';
 
 interface Props { title: string; description: string; ogImage?: string; type?: 'website' | 'article'; noindex?: boolean; published?: Date; }
-const { title, description, ogImage = '/og/default.jpg', type = 'website', noindex = false, published } = Astro.props;
+const { title, description, ogImage = u('/og/default.jpg'), type = 'website', noindex = false, published } = Astro.props;
 const siteName = 'מעשר+ · עשר כדי שתתעשר';
 const fullTitle = title === siteName ? title : `${title} · מעשר+`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -39,11 +40,11 @@ const lines = (s: string) => s.split('\n');
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex" />}
   <meta name="theme-color" content="#F8F4EA" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="/icon/icon-192.png" sizes="192x192" type="image/png" />
-  <link rel="apple-touch-icon" href="/icon/icon-180.png" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <link rel="icon" href={u('/icon/icon-192.png')} sizes="192x192" type="image/png" />
+  <link rel="apple-touch-icon" href={u('/icon/icon-180.png')} />
+  <link rel="manifest" href={u('/manifest.webmanifest')} />
+  <link rel="sitemap" href={u('/sitemap-index.xml')} />
   <meta property="og:type" content={type} />
   <meta property="og:locale" content="he_IL" />
   <meta property="og:site_name" content={siteName} />
@@ -68,7 +69,7 @@ const lines = (s: string) => s.split('\n');
         <Logo />
         <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="פתיחת תפריט"><span></span><span></span><span></span></button>
         <div class="menu" id="menu">
-          <ul>{nav.map((n) => <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>)}</ul>
+          <ul>{nav.map((n) => <li><a href={u(n.href)} aria-current={path.startsWith(u(n.href)) ? 'page' : undefined}>{n.label}</a></li>)}</ul>
           <a class="nb" href={site.app_url} rel="noopener">לאפליקציה</a>
         </div>
       </nav>
@@ -79,8 +80,8 @@ const lines = (s: string) => s.split('\n');
     <div class="wrap">
       <div class="fg">
         <div><Logo /><p class="tag">{lines(site.footer_tagline).map((l, i) => <>{i > 0 && <br />}{l}</>)}</p></div>
-        <div><h2 class="fh">התוכן</h2><ul><li><a href="/articles/">מאמרים</a></li><li><a href="/stories/">סיפורים</a></li><li><a href="/forum/">התייעצויות</a></li><li><a href="/about/">על הפרויקט</a></li></ul></div>
-        <div><h2 class="fh">האפליקציה</h2><ul><li><a href={site.app_url} rel="noopener">לחשב את המעשר שלי</a></li><li><a href="/stories/submit/">שליחת סיפור</a></li><li><a href="/privacy/">מדיניות פרטיות</a></li><li><a href="/accessibility/">הצהרת נגישות</a></li></ul></div>
+        <div><h2 class="fh">התוכן</h2><ul><li><a href={u('/articles/')}>מאמרים</a></li><li><a href={u('/stories/')}>סיפורים</a></li><li><a href={u('/forum/')}>התייעצויות</a></li><li><a href={u('/about/')}>על הפרויקט</a></li></ul></div>
+        <div><h2 class="fh">האפליקציה</h2><ul><li><a href={site.app_url} rel="noopener">לחשב את המעשר שלי</a></li><li><a href={u('/stories/submit/')}>שליחת סיפור</a></li><li><a href={u('/privacy/')}>מדיניות פרטיות</a></li><li><a href={u('/accessibility/')}>הצהרת נגישות</a></li></ul></div>
       </div>
       <div class="bot"><span>© מעשר+ · {site.footer_bottom}</span><span>בכל שאלה הלכתית אישית מומלץ להתייעץ עם רב</span></div>
     </div>

@@ -2,13 +2,13 @@
 import Card from './Card.astro';
 import EmptyState from './EmptyState.astro';
 import AppButton from './AppButton.astro';
-import { CATS, heDate } from '../lib';
+import { CATS, heDate, u } from '../lib';
 interface Props { items: any[]; current?: string }
 const { items, current } = Astro.props;
 ---
 <nav class="filters" aria-label="סינון לפי נושא">
-  <a href="/articles/" aria-current={!current ? 'page' : undefined}>הכל</a>
-  {CATS.map((c) => <a href={`/articles/c/${c.slug}/`} aria-current={current === c.slug ? 'page' : undefined}>{c.name}</a>)}
+  <a href={u('/articles/')} aria-current={!current ? 'page' : undefined}>הכל</a>
+  {CATS.map((c) => <a href={u(`/articles/c/${c.slug}/`)} aria-current={current === c.slug ? 'page' : undefined}>{c.name}</a>)}
 </nav>
-{items.length ? <div class="cards">{items.map((a) => <Card href={`/articles/${a.id}/`} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
- : <EmptyState icon="book" title={current ? 'מאמרים בנושא הזה יעלו בקרוב' : 'מאמרים יעלו בקרוב'} text="אנחנו מכינים מאמרים בהלכה, במס ומדריכים מעשיים. בינתיים אפשר להתחיל לעקוב אחרי המעשר באפליקציה החינמית."><AppButton label="לאפליקציה" />{current && <a class="link" href="/articles/">לכל המאמרים</a>}</EmptyState>}
+{items.length ? <div class="cards">{items.map((a) => <Card href={u(`/articles/${a.id}/`)} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
+ : <EmptyState icon="book" title={current ? 'מאמרים בנושא הזה יעלו בקרוב' : 'מאמרים יעלו בקרוב'} text="אנחנו מכינים מאמרים בהלכה, במס ומדריכים מעשיים. בינתיים אפשר להתחיל לעקוב אחרי המעשר באפליקציה החינמית."><AppButton label="לאפליקציה" />{current && <a class="link" href={u('/articles/')}>לכל המאמרים</a>}</EmptyState>}

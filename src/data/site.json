@@ -1,11 +1,12 @@
 {
   "app_url": "https://maaser-plus.com",
-  "contact_email": "CONTACT_EMAIL_PLACEHOLDER",
-  "pending_copy_note": "שלוש השורות הבאות ממתינות לאישור של אור. אפשר לשנות אותן כאן, בלי קוד.",
+  "contact_email": "",
+  "hero_verse": "ובחנוני נא בזאת",
+  "hero_verse_source": "מלאכי ג׳, י׳",
   "categories_heading": "ללמוד, להבין,\nולתת בשמחה",
-  "footer_tagline": "לתת בשמחה,\nולדעת שהחשבון מדויק.",
+  "footer_tagline": "עשר כדי שתתעשר.\nובחנוני נא בזאת.",
   "footer_bottom": "פרויקט חינמי לזיכוי הרבים",
-  "rav_name": "{שם הרב}",
-  "rav_date": "{תאריך}",
+  "rav_name": "",
+  "rav_date": "",
   "community_api_base": ""
 }

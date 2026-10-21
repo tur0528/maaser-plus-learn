@@ -4,14 +4,14 @@ import PageHead from '../../components/PageHead.astro';
 import Card from '../../components/Card.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import { getCollection } from 'astro:content';
-import { byDateDesc, heDate, visible } from '../../lib';
+import { byDateDesc, heDate, visible, u } from '../../lib';
 const items = (await getCollection('stories')).filter(visible).sort(byDateDesc);
 ---
 <Base title="סיפורים" description="סיפורים של אנשים על נתינה, מעשר וצדקה, וסיפורים מן המקורות. כל סיפור מתפרסם רק אחרי בדיקה.">
   <PageHead eyebrow="סיפורים" title="סיפורים על נתינה" lead="סיפורים שאנשים שלחו לנו, וסיפורים מן המקורות. כל סיפור נבדק לפני שהוא עולה לאתר.">
-    <div class="meta-row"><a class="btn btn-line" href="/stories/submit/">יש לכם סיפור? שלחו אותו</a></div>
+    <div class="meta-row"><a class="btn btn-line" href={u('/stories/submit/')}>יש לכם סיפור? שלחו אותו</a></div>
   </PageHead>
   <section class="listing"><div class="wrap">
-    {items.length ? <div class="cards">{items.map((s) => <Card href={`/stories/${s.id}/`} title={s.data.title} summary={s.data.summary} tag={s.data.anonymous ? 'בעילום שם' : s.data.author} meta={heDate(s.data.date)} example={s.data.example} />)}</div> : <EmptyState icon="candle" title="סיפורים יעלו בקרוב" text="יש לכם סיפור על נתינה, מעשר או צדקה? שלחו אותו, אפשר גם בעילום שם. כל סיפור נבדק לפני פרסום."><a class="btn btn-em" href="/stories/submit/">לשליחת סיפור</a></EmptyState>}
+    {items.length ? <div class="cards">{items.map((s) => <Card href={u(`/stories/${s.id}/`)} title={s.data.title} summary={s.data.summary} tag={s.data.anonymous ? 'בעילום שם' : s.data.author} meta={heDate(s.data.date)} example={s.data.example} />)}</div> : <EmptyState icon="candle" title="סיפורים יעלו בקרוב" text="יש לכם סיפור על נתינה, מעשר או צדקה? שלחו אותו, אפשר גם בעילום שם. כל סיפור נבדק לפני פרסום."><a class="btn btn-em" href={u('/stories/submit/')}>לשליחת סיפור</a></EmptyState>}
   </div></section>
 </Base>

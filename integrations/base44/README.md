@@ -1,21 +1,25 @@
-# הקמת שרת הקהילה ב־Base44 (פורום + טופס סיפורים)
+# הקמת שרת הקהילה ב־Base44 (פורום + טופס סיפורים + תיבת ניהול)
 
-זה מה שצריך מאור, בערך 20–30 דקות. אני יכול להדריך תוך כדי.
+זה מה שצריך מאור, בערך 20–30 דקות. אני יכול להדריך תוך כדי. **עוד לא נוצר שום דבר ב־Base44.**
 
-1. ב־Base44 יוצרים **אפליקציה חדשה ונפרדת**, למשל `maaser-community`. היא לא האפליקציה של מעשר+, כדי שהנתונים לא יתערבבו.
+1. ב־Base44 יוצרים **אפליקציה חדשה ונפרדת**, למשל `maaser-community`. היא לא האפליקציה של מעשר+, כדי שהנתונים לא יתערבבו. אור הוא ה־admin שלה.
 2. **ישויות (Data):** יוצרים את `ForumTopic`, ‏`ForumReply` ו־`StorySubmission`, לפי `entities.json`. בכל אחת מגדירים הרשאות **בלי קריאה או כתיבה ציבורית**. רק ה־functions ניגשות לנתונים.
 3. **Backend functions:**
-   - מעתיקים את 5 הקבצים שב־`functions/`, ואת `shared/community.ts` ל־`base44/shared/`.
+   - מעתיקים את 7 הקבצים שב־`functions/`, ואת `shared/community.ts` ל־`base44/shared/`.
    - אם אין תמיכה בקבצים משותפים, מדביקים את התוכן של `community.ts` בראש כל function.
-   - הקבצים הם `forumList`, ‏`forumGetTopic`, ‏`forumCreateTopic`, ‏`forumCreateReply`, ‏`submitStory`.
-4. ב־`shared/community.ts` משנים 3 דברים:
-   - `NOTIFY_EMAIL`: המייל שאליו יגיעו ההתראות.
+   - ציבוריות (האתר קורא להן): `forumList`, ‏`forumGetTopic`, ‏`forumCreateTopic`, ‏`forumCreateReply`, ‏`submitStory`.
+   - למנהל בלבד (בודקות שהמשתמש המחובר הוא admin): `adminInbox`, ‏`adminModerate`.
+4. ב־`shared/community.ts`:
    - `SALT`: מחרוזת אקראית כלשהי.
-   - `ALLOWED_ORIGINS`: הכתובת הסופית של האתר.
-5. **פרסום (Publish)** של האפליקציה. מעתיקים את הכתובת שלה, למשל `https://maaser-community.base44.app`.
-6. באתר, ב־Pages CMS ← **הגדרות האתר וניסוחים** ← **כתובת שרת הקהילה**, מדביקים את הכתובת ושומרים. אפשר גם ישירות בקובץ `src/data/site.json` ← `community_api_base`.
-7. בודקים: פותחים נושא באתר ← מגיע מייל ← ב־Base44 משנים את הסטטוס ל־`approved` ← הנושא מופיע.
+   - `ALLOWED_ORIGINS`: הכתובת של האתר. כרגע `https://tur0528.github.io`, ובהמשך `https://learn.maaser-plus.com`.
+   - `NOTIFY_EMAIL`: **לא חובה.** ריק = אין מיילים, וההתראות מחכות בתיבת הניהול. אם בעתיד יהיה מייל, כותבים אותו כאן ומקבלים גם מייל על כל פריט חדש.
+5. **תיבת ניהול (עמוד באפליקציית הקהילה):** מבקשים מ־Base44 לבנות עמוד אחד, למשל בפרומפט:
+   > צור עמוד "תיבת ניהול" שזמין רק למשתמש admin. בטעינה הוא קורא ל־backend function `adminInbox` ומציג שלוש לשוניות עם מונה: "נושאים בפורום", "תגובות", "סיפורים". כל פריט מציג כותרת, טקסט מלא, שם/כינוי, תאריך, ולתגובה גם את שם הנושא (topic_title). לכל פריט שני כפתורים, "לאשר" ו"לדחות", שקוראים ל־`adminModerate` עם `{ kind: 'topic' | 'reply' | 'story', id, action: 'approve' | 'reject' }` ומסירים את הפריט מהרשימה. בראש העמוד מספר כולל של פריטים שממתינים. עברית, מימין לשמאל.
+   - כל נושא, תגובה או סיפור חדש מופיע שם מיד. נושא או תגובה שאושרו מופיעים באתר. סיפור שאושר מעלים לאתר דרך Pages CMS ← סיפורים (ראו `docs/HOW-TO-ADD-ARTICLE.md`).
+6. **פרסום (Publish)** של האפליקציה. מעתיקים את הכתובת שלה, למשל `https://maaser-community.base44.app`.
+7. באתר, ב־Pages CMS ← **הגדרות האתר וניסוחים** ← **כתובת שרת הקהילה**, מדביקים את הכתובת ושומרים. אפשר גם ישירות בקובץ `src/data/site.json` ← `community_api_base`.
+8. בודקים: פותחים נושא באתר ← הוא מופיע בתיבת הניהול ← "לאשר" ← הנושא מופיע באתר.
 
-**בדיקה מקומית בלי Base44:** מריצים `node tools/mock-community.mjs`, מגדירים `community_api_base` ל־`http://localhost:8787` ומריצים build. זה שרת דמה עם אותו API.
+**בדיקה מקומית בלי Base44:** מריצים `node tools/mock-community.mjs`, מגדירים `community_api_base` ל־`http://localhost:8787` ומריצים build. זה שרת דמה עם אותו API (בלי תיבת הניהול).
 
-> לא בדקתי את ה־functions על Base44 אמיתי, כי אין לי גישה לחשבון של אור. הקוד נכתב לפי התיעוד הרשמי (createClientFromRequest, asServiceRole, entities.filter/create, Core.SendEmail), אבל ייתכן שיידרשו התאמות קטנות בהקמה. למשל אם Base44 מטפל ב־CORS בעצמו, או אם המיון לפי `created_date` נקרא אצלם אחרת.
+> לא בדקתי את ה־functions על Base44 אמיתי, כי אין לי גישה לחשבון של אור. הקוד נכתב לפי התיעוד הרשמי (createClientFromRequest, auth.me, asServiceRole, entities.filter/create/update, Core.SendEmail), אבל ייתכן שיידרשו התאמות קטנות בהקמה. למשל אם Base44 מטפל ב־CORS בעצמו, אם המיון לפי `created_date` נקרא אצלם אחרת, או אם שדה התפקיד של המשתמש נקרא אחרת מ־`role`.

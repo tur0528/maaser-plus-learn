@@ -66,11 +66,12 @@ content:
     format: json
     fields:
       - { name: app_url, label: "כתובת האפליקציה", type: string }
-      - { name: contact_email, label: "דוא״ל ליצירת קשר (מופיע בפרטיות ובנגישות)", type: string }
-      - { name: pending_copy_note, label: "הערה (פנימית)", type: string, readonly: true }
-      - { name: categories_heading, label: "כותרת אזור הנושאים בדף הבית (ממתין לאישור). שורה חדשה = Enter", type: text }
-      - { name: footer_tagline, label: "משפט בפוטר (ממתין לאישור)", type: text }
-      - { name: footer_bottom, label: "שורה תחתונה בפוטר (ממתין לאישור)", type: string }
-      - { name: rav_name, label: "שם הרב בתיבת הבדיקה (להשאיר {שם הרב} עד שיש רב אמיתי)", type: string }
-      - { name: rav_date, label: "תאריך הבדיקה ({תאריך} עד אז)", type: string }
+      - { name: contact_email, label: "דוא״ל ליצירת קשר (לא חובה). ריק = בדפי הפרטיות והנגישות מופיעה הפניה לטופס באתר", type: string }
+      - { name: hero_verse, label: "פסוק מתחת לכותרת הראשית בדף הבית (ריק = לא מוצג)", type: string }
+      - { name: hero_verse_source, label: "מקור הפסוק", type: string }
+      - { name: categories_heading, label: "כותרת אזור הנושאים בדף הבית. שורה חדשה = Enter", type: text }
+      - { name: footer_tagline, label: "משפט בפוטר. שורה חדשה = Enter", type: text }
+      - { name: footer_bottom, label: "שורה תחתונה בפוטר", type: string }
+      - { name: rav_name, label: "שם הרב בתיבת \"נבדק על ידי הרב\" (ריק = התיבה לא מוצגת. למלא רק אחרי בדיקה אמיתית)", type: string }
+      - { name: rav_date, label: "תאריך הבדיקה (לא חובה)", type: string }
       - { name: community_api_base, label: "כתובת שרת הקהילה ב־Base44 (לפורום ולסיפורים). ריק = מצב תצוגה", type: string }

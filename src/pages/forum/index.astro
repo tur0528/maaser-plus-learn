@@ -1,4 +1,5 @@
 ---
+import { u } from '../../lib';
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import { enabled } from '../../scripts/community';
@@ -19,7 +20,7 @@ import { enabled } from '../../scripts/community';
           <div class="field"><label for="t-body">תוכן ההודעה</label><textarea id="t-body" name="body" required minlength="10" maxlength="4000"></textarea></div>
           <div class="field"><label for="t-name">כינוי <span class="hint">(לא חובה. בלי כינוי יופיע "בעילום שם")</span></label><input id="t-name" name="name" type="text" maxlength="40" /></div>
           <div class="hp" aria-hidden="true"><label>אתר<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-          <label class="check"><input type="checkbox" name="consent" value="1" required />קראתי את כללי הפורום ואת <a href="/privacy/" style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
+          <label class="check"><input type="checkbox" name="consent" value="1" required />קראתי את כללי הפורום ואת <a href={u('/privacy/')} style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
           <div><button class="btn btn-em" type="submit">שליחה לאישור</button></div>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
@@ -41,7 +42,7 @@ import { enabled } from '../../scripts/community';
     const ul = document.getElementById('topics')!;
     const render = (topics: any[], _live: boolean) => {
       if (!topics.length) { ul.innerHTML = '<li class="empty-li"><div class="empty-state compact"><h2>עדיין אין נושאים</h2><p>אפשר לפתוח את הנושא הראשון בטופס. כל הודעה מתפרסמת אחרי אישור.</p></div></li>'; return; }
-      ul.innerHTML = topics.map((t) => `<li class="topic"><h3><a href="/forum/topic/?id=${encodeURIComponent(t.id)}">${esc(t.title)}</a></h3>
+      ul.innerHTML = topics.map((t) => `<li class="topic"><h3><a href="${import.meta.env.BASE_URL.replace(/\/?$/, "/")}forum/topic/?id=${encodeURIComponent(t.id)}">${esc(t.title)}</a></h3>
         <p>${esc(String(t.body).slice(0, 160))}${String(t.body).length > 160 ? '…' : ''}</p>
         <div class="tm"><span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span><span>${t.reply_count ?? 0} תגובות</span></div></li>`).join('');
     };

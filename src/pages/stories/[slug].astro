@@ -4,7 +4,7 @@ import PageHead from '../../components/PageHead.astro';
 import AppButton from '../../components/AppButton.astro';
 import ExampleBadge from '../../components/ExampleBadge.astro';
 import { getCollection, render } from 'astro:content';
-import { heDate, ogFor, visible } from '../../lib';
+import { heDate, ogFor, visible, u } from '../../lib';
 export async function getStaticPaths() {
   const all = (await getCollection('stories')).filter(visible);
   return all.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -19,10 +19,10 @@ const by = d.anonymous ? 'בעילום שם' : (d.author ?? '');
     <div class="meta-row">{by && <span>מאת: {by}</span>}<span>{heDate(d.date)}</span>{d.example && <ExampleBadge />}</div>
   </PageHead>
   <article class="article"><div class="wrap narrow">
-    <p class="crumbs"><a href="/stories/">סיפורים</a></p>
-    {d.cover && <img class="cover-img" src={d.cover} alt="" loading="lazy" />}
+    <p class="crumbs"><a href={u('/stories/')}>סיפורים</a></p>
+    {d.cover && <img class="cover-img" src={u(d.cover)} alt="" loading="lazy" />}
     <div class="prose"><Content /></div>
     {d.source && <section class="sources"><h2>מקור</h2><ol><li>{d.source}</li></ol></section>}
-    <div class="cta-strip"><div><h2>יש לכם סיפור על נתינה?</h2><p>שלחו אותו, אפשר גם בעילום שם. שום דבר לא מתפרסם בלי אישור.</p></div><a class="btn btn-em" href="/stories/submit/">לשליחת סיפור</a></div>
+    <div class="cta-strip"><div><h2>יש לכם סיפור על נתינה?</h2><p>שלחו אותו, אפשר גם בעילום שם. שום דבר לא מתפרסם בלי אישור.</p></div><a class="btn btn-em" href={u('/stories/submit/')}>לשליחת סיפור</a></div>
   </div></article>
 </Base>

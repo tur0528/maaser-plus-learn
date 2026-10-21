@@ -1,4 +1,7 @@
 import fs from 'node:fs';
+/** prefix an internal path with the site base ('/maaser-plus-learn/' on GitHub Pages, '/' on a custom domain) */
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const u = (p: string) => (p.startsWith('/') ? BASE + p : p);
 export const heDate = (d: Date) => new Intl.DateTimeFormat('he-IL', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 export const byDateDesc = <T extends { data: { date: Date } }>(a: T, b: T) => b.data.date.getTime() - a.data.date.getTime();
 export const visible = <T extends { data: { draft?: boolean } }>(e: T) => !e.data.draft;
@@ -9,7 +12,7 @@ export const CATS = [
 ] as const;
 /** og image for an entry if scripts/og.mjs rendered one, otherwise the default */
 export const ogFor = (kind: 'articles' | 'stories', id: string) =>
-  fs.existsSync(`public/og/${kind}/${id}.jpg`) ? `/og/${kind}/${id}.jpg` : '/og/default.jpg';
+  fs.existsSync(`public/og/${kind}/${id}.jpg`) ? u(`/og/${kind}/${id}.jpg`) : u('/og/default.jpg');
 /** turn "label: https://..." source lines into {text, url} */
 export const parseSource = (s: string) => {
   const m = s.match(/^(.*?):\s*(https?:\/\/\S+)\s*$/);

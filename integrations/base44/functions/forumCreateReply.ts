@@ -1,6 +1,6 @@
 // POST /functions/forumCreateReply { topic_id, body, name, consent, website, started_at } → { ok: true }
 import { createClientFromRequest } from 'npm:@base44/sdk';
-import { json, preflight, clean, ipHash, looksLikeBot, rateLimited, NOTIFY_EMAIL } from '../shared/community.ts';
+import { json, preflight, clean, ipHash, looksLikeBot, rateLimited, notify } from '../shared/community.ts';
 
 Deno.serve(async (req) => {
   const pf = preflight(req); if (pf) return pf;
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     const hash = await ipHash(req);
     if (await rateLimited(E, hash, 6)) return json(req, { error: 'rate' }, 429);
     await E.create({ topic_id, body, author, status: 'pending', ip_hash: hash });
-    if (NOTIFY_EMAIL.includes('@')) await base44.asServiceRole.integrations.Core.SendEmail({ to: NOTIFY_EMAIL, subject: `תגובה חדשה ממתינה לאישור: ${t.title}`, body: `${body}\n\nמאת: ${author || 'בעילום שם'}` }).catch(() => {});
+    await notify(base44, `תגובה חדשה ממתינה לאישור: ${t.title}`, `${body}\n\nמאת: ${author || 'בעילום שם'}`); // optional; the item already waits in the admin inbox
     return json(req, { ok: true });
   } catch (e) { return json(req, { error: 'server' }, 500); }
 });

@@ -1,15 +1,19 @@
 ---
-// תיבת "נבדק על ידי הרב". השם והתאריך הם PLACEHOLDER גלוי עד שרב אמיתי יבדוק ויסכים להופיע בשמו.
-// עורכים אותם ב־src/data/site.json (או ב־Pages CMS > הגדרות האתר).
+// תיבת "נבדק על ידי הרב". מוצגת רק כשיש שם רב אמיתי ב־src/data/site.json → rav_name (או ב־Pages CMS > הגדרות האתר).
+// כל עוד rav_name ריק (או נשאר עם placeholder בסוגריים), התיבה לא מוצגת בכלל.
 import site from '../data/site.json';
 import Icon from './Icon.astro';
-const isPlaceholder = site.rav_name.includes('{');
+const name = (site.rav_name || '').trim();
+const date = (site.rav_date || '').trim();
+const ready = name.length > 0 && !/[{}\[\]]/.test(name);
+const dateOk = date.length > 0 && !/[{}\[\]]/.test(date);
 ---
-<aside class={`rav-box${isPlaceholder ? ' is-placeholder' : ''}`} aria-label="בדיקה הלכתית">
+{ready && (
+<aside class="rav-box" aria-label="בדיקה הלכתית">
   <span class="ok"><Icon name="check" size={24} /></span>
   <div>
-    <b>התוכן ההלכתי נבדק על ידי {site.rav_name}</b>
-    <p>תאריך הבדיקה: {site.rav_date}. בכל שאלה אישית מומלץ להתייעץ עם רב.</p>
-    {isPlaceholder && <p class="ph-note">מקום שמור: השם והתאריך יוזנו רק אחרי בדיקה אמיתית.</p>}
+    <b>התוכן ההלכתי נבדק על ידי {name}</b>
+    <p>{dateOk && <>תאריך הבדיקה: {date}. </>}בכל שאלה אישית מומלץ להתייעץ עם רב.</p>
   </div>
 </aside>
+)}

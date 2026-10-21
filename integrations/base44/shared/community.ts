@@ -2,10 +2,13 @@
 // Put this file in base44/shared/community.ts and import it from each function,
 // or paste its contents at the top of each function if shared imports are not available.
 export const ALLOWED_ORIGINS = [
-  'https://learn.maaser-plus.com', // ← the content site's final address (change when the subdomain is chosen)
+  'https://tur0528.github.io',      // ← preview on GitHub Pages (origin has no path)
+  'https://learn.maaser-plus.com', // ← final address once the subdomain is connected (docs/DNS.md)
   'http://localhost:4321',         // local preview
 ];
-export const NOTIFY_EMAIL = 'OR_EMAIL_PLACEHOLDER'; // ← Or's email for "new item waiting for approval"
+// Notifications: every new item lands in the admin inbox page of the Base44 community app (status pending/new),
+// so no email is needed. OPTIONAL: put an email here to ALSO get an email alert per new item. Empty = no email.
+export const NOTIFY_EMAIL = '';
 const SALT = 'CHANGE_ME_RANDOM_SALT';                // ← any random string
 
 export function cors(req: Request) {
@@ -36,4 +39,16 @@ export async function rateLimited(entity: any, hash: string, max = 5) {
   const recent = await entity.filter({ ip_hash: hash }, '-created_date', max);
   const hourAgo = Date.now() - 3600_000;
   return recent.filter((r: any) => new Date(r.created_date).getTime() > hourAgo).length >= max;
+}
+
+/** optional email alert. Does nothing while NOTIFY_EMAIL is empty; never fails the request. */
+export async function notify(base44: any, subject: string, body: string) {
+  if (!NOTIFY_EMAIL.includes('@')) return;
+  await base44.asServiceRole.integrations.Core.SendEmail({ to: NOTIFY_EMAIL, subject, body }).catch(() => {});
+}
+
+/** admin-only guard for the moderation functions: the caller must be logged in to the Base44 app as an admin */
+export async function requireAdmin(base44: any) {
+  const me = await base44.auth.me().catch(() => null);
+  return me && me.role === 'admin' ? me : null;
 }

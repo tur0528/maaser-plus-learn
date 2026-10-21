@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import site from '../data/site.json';
+import { u } from '../lib';
 ---
 <Base title="הצהרת נגישות" description="הצהרת הנגישות של אתר מעשר+.">
-  <PageHead eyebrow="נגישות" title="הצהרת נגישות" lead="עודכן לאחרונה: [תאריך]." />
+  <PageHead eyebrow="נגישות" title="הצהרת נגישות" lead="עודכן לאחרונה: 21 באוקטובר 2026." />
   <section class="article"><div class="wrap narrow"><div class="prose">
     <p>אנחנו רוצים שכל אחד יוכל להשתמש באתר בנוחות. האתר נבנה לפי הנחיות WCAG 2.1 ברמה AA, וברוח תקן ישראלי 5568 ותקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות).</p>
     <h2>מה עשינו</h2>
@@ -16,6 +17,6 @@ import site from '../data/site.json';
       <li>אנימציות מכבדות את ההגדרה "הפחתת תנועה" במכשיר.</li>
     </ul>
     <h2>נתקלתם בבעיה?</h2>
-    <p>אם משהו באתר לא נגיש לכם, נשמח לשמוע ולתקן. רכז/ת הנגישות: [שם], בדוא״ל <span dir="ltr">{site.contact_email}</span>.</p>
+    <p>אם משהו באתר לא נגיש לכם, נשמח לשמוע ולתקן. {site.contact_email.includes('@') ? <>אפשר לכתוב לנו בדוא״ל <span dir="ltr">{site.contact_email}</span>.</> : <>אפשר לכתוב לנו דרך <a href={u('/stories/submit/')}>הטופס באתר</a>, עם הכותרת "פנייה בנושא נגישות". פנייה כזו לא מתפרסמת.</>}</p>
   </div></div></section>
 </Base>

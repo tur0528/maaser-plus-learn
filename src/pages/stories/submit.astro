@@ -1,4 +1,5 @@
 ---
+import { u } from '../../lib';
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import { enabled } from '../../scripts/community';
@@ -14,7 +15,7 @@ import { enabled } from '../../scripts/community';
       <label class="check"><input type="checkbox" name="anonymous" value="1" />לפרסם בעילום שם. השם לא יופיע באתר.</label>
       <div class="field"><label for="s-contact">דרך ליצור איתכם קשר <span class="hint">(לא חובה, ולא מתפרסם. רק אם נצטרך לשאול משהו)</span></label><input id="s-contact" name="contact" type="email" maxlength="120" autocomplete="email" /></div>
       <div class="hp" aria-hidden="true"><label>אתר<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-      <label class="check"><input type="checkbox" name="consent" value="1" required />אני מאשר/ת שהסיפור שלי, שאני רשאי/ת לשתף אותו, ושמעשר+ רשאי לערוך ולפרסם אותו באתר. קראתי את <a href="/privacy/" style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
+      <label class="check"><input type="checkbox" name="consent" value="1" required />אני מאשר/ת שהסיפור שלי, שאני רשאי/ת לשתף אותו, ושמעשר+ רשאי לערוך ולפרסם אותו באתר. קראתי את <a href={u('/privacy/')} style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
       <div><button class="btn btn-em" type="submit">שליחה לבדיקה</button></div>
       <p class="form-status" role="status" aria-live="polite"></p>
     </form>

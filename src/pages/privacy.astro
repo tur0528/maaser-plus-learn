@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import site from '../data/site.json';
+import { u } from '../lib';
 ---
 <Base title="מדיניות פרטיות" description="מדיניות הפרטיות של אתר התוכן מעשר+: איזה מידע נאסף, למה, ואיך מבקשים למחוק אותו.">
-  <PageHead eyebrow="פרטיות" title="מדיניות פרטיות" lead="עודכן לאחרונה: [תאריך]. נוסח בסיסי, ממתין לבדיקה משפטית לפני פרסום." />
+  <PageHead eyebrow="פרטיות" title="מדיניות פרטיות" lead="עודכן לאחרונה: 21 באוקטובר 2026. נוסח בסיסי, ממתין לבדיקה משפטית לפני פרסום." />
   <section class="article"><div class="wrap narrow"><div class="prose">
     <p>המדיניות הזו חלה על אתר התוכן "עשר כדי שתתעשר". לאפליקציית מעשר+ יש <a href={`${site.app_url}/privacy`} rel="noopener">מדיניות פרטיות נפרדת</a>.</p>
     <h2>קריאה באתר</h2>
@@ -19,7 +20,7 @@ import site from '../data/site.json';
       <li><strong>למה:</strong> כדי לבדוק את ההודעה ולפרסם אותה אם אושרה. אם השארתם דרך יצירת קשר, היא משמשת רק לשאלות על הסיפור, ולא מתפרסמת.</li>
       <li><strong>עילום שם:</strong> אם ביקשתם, השם לא יופיע באתר.</li>
       <li><strong>איפה נשמר:</strong> אצל ספק שירות ענן (Base44), שעשוי לאחסן מידע בשרתים מחוץ לישראל.</li>
-      <li><strong>מחיקה ותיקון:</strong> אפשר לבקש לעיין במידע, לתקן אותו או למחוק אותו בפנייה ל־<span dir="ltr">{site.contact_email}</span>.</li>
+      <li><strong>מחיקה ותיקון:</strong> אפשר לבקש לעיין במידע, לתקן אותו או למחוק אותו {site.contact_email.includes('@') ? <>בפנייה ל־<span dir="ltr">{site.contact_email}</span>.</> : <>בפנייה דרך <a href={u('/stories/submit/')}>הטופס באתר</a>, עם הכותרת "פנייה בנושא פרטיות". פנייה כזו לא מתפרסמת.</>}</li>
     </ul>
     <h2>מה לא לכתוב</h2>
     <p>הודעות בפורום ובסיפורים מתפרסמות לכולם. אל תכתבו מספר טלפון, מספר זהות, פרטי חשבון בנק או סכומים שיכולים לזהות אתכם.</p>

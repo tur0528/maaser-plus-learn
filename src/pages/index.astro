@@ -6,7 +6,7 @@ import Card from '../components/Card.astro';
 import EmptyState from '../components/EmptyState.astro';
 import { getCollection } from 'astro:content';
 import site from '../data/site.json';
-import { heDate, byDateDesc, visible } from '../lib';
+import { heDate, byDateDesc, visible, u } from '../lib';
 
 const articles = (await getCollection('articles')).filter(visible).sort(byDateDesc).slice(0, 3);
 const lines = (s: string) => s.split('\n');
@@ -21,11 +21,12 @@ const jsonLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'מ
         <div>
           <span class="eyebrow"><i></i>מעשר כספים · הלכה, מקורות והשראה</span>
           <h1>עשר כדי<em>שתתעשר</em></h1>
+          {site.hero_verse && <p class="verse">״{site.hero_verse}״{site.hero_verse_source && <cite>{site.hero_verse_source}</cite>}</p>}
           <p class="lead">מקום אחד ללמוד על מעשר ונתינה: הלכות בשפה פשוטה, מאמרים ומקורות, ואפליקציה חינמית שעושה בשבילכם את החשבון.</p>
-          <div class="acts"><AppButton /><a class="link" href="/articles/">להתחיל ללמוד</a></div>
+          <div class="acts"><AppButton /><a class="link" href={u('/articles/')}>להתחיל ללמוד</a></div>
           <div class="src">״עשר בשביל שתתעשר״ · תענית ט׳ ע״א</div>
         </div>
-        <div class="art"><img src="/assets/hero-illustration.svg" alt="" width="640" height="640" fetchpriority="high" /></div>
+        <div class="art"><img src={u('/assets/hero-illustration.svg')} alt="" width="640" height="640" fetchpriority="high" /></div>
       </div>
     </div>
   </header>
@@ -34,14 +35,14 @@ const jsonLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'מ
     <div class="wrap">
       <div class="sh">
         <div><span class="eyebrow"><i></i>מה תמצאו כאן</span>
-          {/* PENDING COPY (README #1): editable in src/data/site.json → categories_heading */}
+          {/* editable in src/data/site.json → categories_heading */}
           <h2 id="cat-h">{lines(site.categories_heading).map((l, i) => <>{i > 0 && <br />}{l}</>)}</h2></div>
         <p>כל התוכן כתוב בשפה פשוטה ומבוסס על מקורות, כדי שיהיה קל לקיים את המצווה.</p>
       </div>
       <div class="tiles">
-        <div class="tile"><span class="num" aria-hidden="true">א</span><div class="ti"><Icon name="book" /></div><h3>מאמרים</h3><p>הלכות בשפה פשוטה, מדריכים מעשיים, וגם איך מקבלים החזר מס על תרומות לפי סעיף 46.</p><span class="go">לכל המאמרים</span><a class="cover" href="/articles/" aria-label="לכל המאמרים"></a></div>
-        <div class="tile"><span class="num" aria-hidden="true">ב</span><div class="ti"><Icon name="candle" /></div><h3>סיפורים</h3><p>סיפורים של אנשים על נתינה, ומן המקורות. כל סיפור מתפרסם רק אחרי בדיקה.</p><span class="go">לסיפורים</span><a class="cover" href="/stories/" aria-label="לסיפורים"></a></div>
-        <div class="tile"><span class="num" aria-hidden="true">ג</span><div class="ti"><Icon name="talk" /></div><h3>התייעצויות</h3><p>פורום פתוח: שואלים, משתפים ועונים זה לזה. בלי הרשמה, וכל הודעה עוברת אישור.</p><span class="go">להתייעצויות</span><a class="cover" href="/forum/" aria-label="להתייעצויות"></a></div>
+        <div class="tile"><span class="num" aria-hidden="true">א</span><div class="ti"><Icon name="book" /></div><h3>מאמרים</h3><p>הלכות בשפה פשוטה, מדריכים מעשיים, וגם איך מקבלים החזר מס על תרומות לפי סעיף 46.</p><span class="go">לכל המאמרים</span><a class="cover" href={u('/articles/')} aria-label="לכל המאמרים"></a></div>
+        <div class="tile"><span class="num" aria-hidden="true">ב</span><div class="ti"><Icon name="candle" /></div><h3>סיפורים</h3><p>סיפורים של אנשים על נתינה, ומן המקורות. כל סיפור מתפרסם רק אחרי בדיקה.</p><span class="go">לסיפורים</span><a class="cover" href={u('/stories/')} aria-label="לסיפורים"></a></div>
+        <div class="tile"><span class="num" aria-hidden="true">ג</span><div class="ti"><Icon name="talk" /></div><h3>התייעצויות</h3><p>פורום פתוח: שואלים, משתפים ועונים זה לזה. בלי הרשמה, וכל הודעה עוברת אישור.</p><span class="go">להתייעצויות</span><a class="cover" href={u('/forum/')} aria-label="להתייעצויות"></a></div>
       </div>
     </div>
   </section>
@@ -70,13 +71,13 @@ const jsonLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'מ
       <AppButton />
       <div class="url">maaser-plus.com</div>
     </div>
-    <div class="phone-wrap" aria-hidden="true"><div class="ring2"></div><div class="ring"></div><div class="phone"><div class="isl"></div><div class="scr"><img src="/assets/app-screen.png" alt="" width="390" height="844" /></div></div></div>
+    <div class="phone-wrap" aria-hidden="true"><div class="ring2"></div><div class="ring"></div><div class="phone"><div class="isl"></div><div class="scr"><img src={u('/assets/app-screen.png')} alt="" width="390" height="844" /></div></div></div>
   </div></div></section>
 
   <section class="latest" aria-labelledby="latest-h"><div class="wrap">
-    <div class="sh"><div><span class="eyebrow"><i></i>חדש באתר</span><h2 id="latest-h">מאמרים אחרונים</h2></div>{articles.length > 0 && <a class="link" href="/articles/">לכל המאמרים</a>}</div>
+    <div class="sh"><div><span class="eyebrow"><i></i>חדש באתר</span><h2 id="latest-h">מאמרים אחרונים</h2></div>{articles.length > 0 && <a class="link" href={u('/articles/')}>לכל המאמרים</a>}</div>
     {articles.length > 0
-      ? <div class="cards">{articles.map((a) => <Card href={`/articles/${a.id}/`} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
+      ? <div class="cards">{articles.map((a) => <Card href={u(`/articles/${a.id}/`)} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
       : <EmptyState icon="book" title="מאמרים יעלו בקרוב" text="הלכות בשפה פשוטה, החזר מס על תרומות ומדריכים מעשיים. בקרוב כאן." />}
   </div></section>
 </Base>

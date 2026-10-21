@@ -1,7 +1,7 @@
 // POST /functions/forumCreateTopic { title, body, name, consent, website, started_at } → { ok: true }
-// Saves as status "pending". Nothing is public until Or sets status = "approved" in Base44 → Data → ForumTopic.
+// Saves as status "pending". Nothing is public until Or approves it in the admin inbox page (adminInbox / adminModerate).
 import { createClientFromRequest } from 'npm:@base44/sdk';
-import { json, preflight, clean, ipHash, looksLikeBot, rateLimited, NOTIFY_EMAIL } from '../shared/community.ts';
+import { json, preflight, clean, ipHash, looksLikeBot, rateLimited, notify } from '../shared/community.ts';
 
 Deno.serve(async (req) => {
   const pf = preflight(req); if (pf) return pf;
@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
     const hash = await ipHash(req);
     if (await rateLimited(E, hash, 3)) return json(req, { error: 'rate' }, 429);
     await E.create({ title, body, author, status: 'pending', reply_count: 0, ip_hash: hash });
-    if (NOTIFY_EMAIL.includes('@')) await base44.asServiceRole.integrations.Core.SendEmail({ to: NOTIFY_EMAIL, subject: `נושא חדש ממתין לאישור: ${title}`, body: `${body}\n\nמאת: ${author || 'בעילום שם'}\nלאישור: Base44 → Data → ForumTopic → status = approved` }).catch(() => {});
+    await notify(base44, `נושא חדש ממתין לאישור: ${title}`, `${body}\n\nמאת: ${author || 'בעילום שם'}\nלאישור: תיבת הניהול באפליקציית הקהילה`); // optional; the item already waits in the admin inbox
     return json(req, { ok: true });
   } catch (e) { return json(req, { error: 'server' }, 500); }
 });

@@ -1,8 +1,8 @@
 // POST /functions/submitStory { title, body, name, anonymous, contact, consent, website, started_at } → { ok: true }
-// Saved as status "new". Stories are NEVER published automatically: Or reads them in Base44 → Data → StorySubmission,
+// Saved as status "new". Stories are NEVER published automatically: Or reads them in the admin inbox page,
 // and publishes an approved story by adding it in Pages CMS → סיפורים (see docs/HOW-TO-ADD-ARTICLE.md).
 import { createClientFromRequest } from 'npm:@base44/sdk';
-import { json, preflight, clean, ipHash, looksLikeBot, rateLimited, NOTIFY_EMAIL } from '../shared/community.ts';
+import { json, preflight, clean, ipHash, looksLikeBot, rateLimited, notify } from '../shared/community.ts';
 
 Deno.serve(async (req) => {
   const pf = preflight(req); if (pf) return pf;
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     const hash = await ipHash(req);
     if (await rateLimited(E, hash, 3)) return json(req, { error: 'rate' }, 429);
     await E.create({ title, body, name, anonymous: b.anonymous === true, contact, status: 'new', ip_hash: hash });
-    if (NOTIFY_EMAIL.includes('@')) await base44.asServiceRole.integrations.Core.SendEmail({ to: NOTIFY_EMAIL, subject: `סיפור חדש התקבל: ${title}`, body: `${body}\n\nשם: ${name || '-'} | עילום שם: ${b.anonymous === true ? 'כן' : 'לא'} | קשר: ${contact || '-'}` }).catch(() => {});
+    await notify(base44, `סיפור חדש התקבל: ${title}`, `${body}\n\nשם: ${name || '-'} | עילום שם: ${b.anonymous === true ? 'כן' : 'לא'} | קשר: ${contact || '-'}`); // optional; the item already waits in the admin inbox
     return json(req, { ok: true });
   } catch (e) { return json(req, { error: 'server' }, 500); }
 });

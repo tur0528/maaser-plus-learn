@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib';
 import Icon from './Icon.astro';
 ---
-<a class="logo" href="/" aria-label="מעשר+ · עשר כדי שתתעשר, לדף הבית"><span class="mk"><Icon name="logo" size={46} /></span><span class="lt"><b>מעשר+</b><span>עשר כדי שתתעשר</span></span></a>
+<a class="logo" href={u('/')} aria-label="מעשר+ · עשר כדי שתתעשר, לדף הבית"><span class="mk"><Icon name="logo" size={46} /></span><span class="lt"><b>מעשר+</b><span>עשר כדי שתתעשר</span></span></a>

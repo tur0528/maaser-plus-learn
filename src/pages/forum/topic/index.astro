@@ -1,10 +1,11 @@
 ---
+import { u } from '../../../lib';
 import Base from '../../../layouts/Base.astro';
 import { enabled } from '../../../scripts/community';
 ---
 <Base title="נושא בהתייעצויות" description="נושא בפורום ההתייעצויות של מעשר+." noindex={true}>
   <header class="page-head grain"><div class="frame" aria-hidden="true"></div><div class="wrap">
-    <p class="crumbs"><a href="/forum/">התייעצויות</a></p>
+    <p class="crumbs"><a href={u('/forum/')}>התייעצויות</a></p>
     <span class="eyebrow"><i></i>התייעצויות</span>
     <h1 id="t-title">טוען…</h1>
     <div class="meta-row" id="t-meta"></div>
@@ -20,7 +21,7 @@ import { enabled } from '../../../scripts/community';
       <div class="field"><label for="r-body">התגובה</label><textarea id="r-body" name="body" required minlength="2" maxlength="3000"></textarea></div>
       <div class="field"><label for="r-name">כינוי <span class="hint">(לא חובה)</span></label><input id="r-name" name="name" type="text" maxlength="40" /></div>
       <div class="hp" aria-hidden="true"><label>אתר<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-      <label class="check"><input type="checkbox" name="consent" value="1" required />קראתי את <a href="/forum/#rules" style="color:var(--em);font-weight:700">כללי הפורום</a> ואת <a href="/privacy/" style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
+      <label class="check"><input type="checkbox" name="consent" value="1" required />קראתי את <a href={u('/forum/#rules')} style="color:var(--em);font-weight:700">כללי הפורום</a> ואת <a href={u('/privacy/')} style="color:var(--em);font-weight:700">מדיניות הפרטיות</a>.</label>
       <div><button class="btn btn-em" type="submit">שליחה לאישור</button></div>
       <p class="form-status" role="status" aria-live="polite"></p>
     </form>
@@ -31,7 +32,7 @@ import { enabled } from '../../../scripts/community';
     (document.getElementById('topic_id') as HTMLInputElement).value = id;
     const $ = (x: string) => document.getElementById(x)!;
     const show = (t: any, _live: boolean) => {
-      if (!t) { $('t-title').textContent = 'הנושא לא נמצא'; $('t-replies').innerHTML = ''; (document.getElementById('reply-form') as HTMLElement).hidden = true; $('t-body').innerHTML = '<p><a href="/forum/">חזרה להתייעצויות</a></p>'; document.querySelector('.article h2.serif')?.setAttribute('hidden', ''); return; }
+      if (!t) { $('t-title').textContent = 'הנושא לא נמצא'; $('t-replies').innerHTML = ''; (document.getElementById('reply-form') as HTMLElement).hidden = true; $('t-body').innerHTML = `<p><a href="${import.meta.env.BASE_URL.replace(/\/?$/, "/")}forum/">חזרה להתייעצויות</a></p>`; document.querySelector('.article h2.serif')?.setAttribute('hidden', ''); return; }
       document.title = `${t.title} · התייעצויות · מעשר+`;
       $('t-title').textContent = t.title;
       $('t-meta').innerHTML = `<span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span>`;
