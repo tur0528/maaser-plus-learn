@@ -27,21 +27,20 @@ import { enabled } from '../../../scripts/community';
   </div></section>
   <script>
     import { enabled, call, esc, heDate, wireForm } from '../../../scripts/community';
-    import demo from '../../../data/forum-examples.json';
     const id = new URLSearchParams(location.search).get('id') || '';
     (document.getElementById('topic_id') as HTMLInputElement).value = id;
     const $ = (x: string) => document.getElementById(x)!;
-    const show = (t: any, isDemo: boolean) => {
-      if (!t) { $('t-title').textContent = 'הנושא לא נמצא'; return; }
+    const show = (t: any, _live: boolean) => {
+      if (!t) { $('t-title').textContent = 'הנושא לא נמצא'; $('t-replies').innerHTML = ''; (document.getElementById('reply-form') as HTMLElement).hidden = true; $('t-body').innerHTML = '<p><a href="/forum/">חזרה להתייעצויות</a></p>'; document.querySelector('.article h2.serif')?.setAttribute('hidden', ''); return; }
       document.title = `${t.title} · התייעצויות · מעשר+`;
       $('t-title').textContent = t.title;
-      $('t-meta').innerHTML = `${isDemo ? '<span class="ex-badge">תוכן לדוגמה</span>' : ''}<span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span>`;
+      $('t-meta').innerHTML = `<span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span>`;
       $('t-body').textContent = t.body;
       const r = t.replies || [];
       $('t-replies').innerHTML = r.length ? r.map((x: any) => `<li class="reply"><div class="who">${esc(x.author || 'בעילום שם')}<span>${heDate(x.created)}</span></div><p>${esc(x.body)}</p></li>`).join('') : '<li class="empty">עדיין אין תגובות.</li>';
     };
     if (enabled) call<{ topic: any }>('forumGetTopic', { id }).then((d) => show(d.topic, false)).catch(() => show(null, false));
-    else show(demo.topics.find((t) => t.id === id) ?? demo.topics[0], true);
+    else show(null, false);
     wireForm(document.getElementById('reply-form') as HTMLFormElement, 'forumCreateReply', (fd) => ({ topic_id: fd.get('topic_id'), body: fd.get('body'), name: fd.get('name'), consent: fd.get('consent') === '1' }), 'תודה! התגובה התקבלה ותופיע אחרי אישור.');
   </script>
 </Base>

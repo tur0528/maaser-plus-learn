@@ -6,7 +6,7 @@ import { enabled } from '../../scripts/community';
 <Base title="התייעצויות" description="פורום פתוח על מעשר, נתינה ומס: שואלים, משתפים ועונים זה לזה. בלי הרשמה, וכל הודעה עוברת אישור לפני פרסום.">
   <PageHead eyebrow="התייעצויות" title="שואלים, משתפים, עונים" lead="פורום פתוח לכל מי שנותן מעשר או רוצה להתחיל. לא צריך חשבון. כל הודעה נבדקת לפני שהיא מתפרסמת." />
   <section class="listing"><div class="wrap">
-    {!enabled && <p class="integration-note" style="margin-bottom:30px"><b>מצב תצוגה:</b> הפורום עוד לא מחובר לשרת, ולכן מוצגים נושאים <b>לדוגמה</b>. החיבור מוגדר ב־<code>src/data/site.json → community_api_base</code> (ראו <code>integrations/base44/README.md</code>).</p>}
+    {!enabled && <p class="integration-note" style="margin-bottom:30px"><b>מצב תצוגה:</b> הפורום עוד לא מחובר לשרת, ולכן אי אפשר לשלוח הודעות. החיבור מוגדר ב־<code>src/data/site.json → community_api_base</code> (ראו <code>integrations/base44/README.md</code>).</p>}
     <div class="forum-grid">
       <div>
         <h2 class="sr">נושאים</h2>
@@ -38,17 +38,16 @@ import { enabled } from '../../scripts/community';
   </div></section>
   <script>
     import { enabled, call, esc, heDate, wireForm } from '../../scripts/community';
-    import demo from '../../data/forum-examples.json';
     const ul = document.getElementById('topics')!;
-    const render = (topics: any[], isDemo: boolean) => {
-      if (!topics.length) { ul.innerHTML = '<li class="empty">עדיין אין נושאים. אפשר לפתוח את הראשון.</li>'; return; }
+    const render = (topics: any[], _live: boolean) => {
+      if (!topics.length) { ul.innerHTML = '<li class="empty-li"><div class="empty-state compact"><h2>עדיין אין נושאים</h2><p>אפשר לפתוח את הנושא הראשון בטופס. כל הודעה מתפרסמת אחרי אישור.</p></div></li>'; return; }
       ul.innerHTML = topics.map((t) => `<li class="topic"><h3><a href="/forum/topic/?id=${encodeURIComponent(t.id)}">${esc(t.title)}</a></h3>
         <p>${esc(String(t.body).slice(0, 160))}${String(t.body).length > 160 ? '…' : ''}</p>
-        <div class="tm">${isDemo ? '<span class="ex-badge">תוכן לדוגמה</span>' : ''}<span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span><span>${t.reply_count ?? 0} תגובות</span></div></li>`).join('');
+        <div class="tm"><span>${esc(t.author || 'בעילום שם')}</span><span>${heDate(t.created)}</span><span>${t.reply_count ?? 0} תגובות</span></div></li>`).join('');
     };
     if (enabled) {
       call<{ topics: any[] }>('forumList', {}).then((d) => render(d.topics || [], false)).catch(() => { ul.innerHTML = '<li class="empty">לא הצלחנו לטעון את הנושאים. נסו לרענן.</li>'; });
-    } else render(demo.topics, true);
+    } else render([], false);
     wireForm(document.getElementById('topic-form') as HTMLFormElement, 'forumCreateTopic', (fd) => ({ title: fd.get('title'), body: fd.get('body'), name: fd.get('name'), consent: fd.get('consent') === '1' }), 'תודה! הנושא התקבל ויופיע אחרי אישור.');
   </script>
 </Base>

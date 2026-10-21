@@ -1,5 +1,7 @@
 ---
 import Card from './Card.astro';
+import EmptyState from './EmptyState.astro';
+import AppButton from './AppButton.astro';
 import { CATS, heDate } from '../lib';
 interface Props { items: any[]; current?: string }
 const { items, current } = Astro.props;
@@ -9,4 +11,4 @@ const { items, current } = Astro.props;
   {CATS.map((c) => <a href={`/articles/c/${c.slug}/`} aria-current={current === c.slug ? 'page' : undefined}>{c.name}</a>)}
 </nav>
 {items.length ? <div class="cards">{items.map((a) => <Card href={`/articles/${a.id}/`} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
- : <p class="empty">עדיין אין מאמרים בנושא הזה.</p>}
+ : <EmptyState icon="book" title={current ? 'מאמרים בנושא הזה יעלו בקרוב' : 'מאמרים יעלו בקרוב'} text="אנחנו מכינים מאמרים בהלכה, במס ומדריכים מעשיים. בינתיים אפשר להתחיל לעקוב אחרי המעשר באפליקציה החינמית."><AppButton label="לאפליקציה" />{current && <a class="link" href="/articles/">לכל המאמרים</a>}</EmptyState>}

@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+interface Props { icon?: 'book' | 'candle' | 'talk' | 'quill'; title: string; text?: string; }
+const { icon = 'quill', title, text } = Astro.props;
+---
+<div class="empty-state grain">
+  <span class="es-ic"><Icon name={icon} size={56} /></span>
+  <h2>{title}</h2>
+  {text && <p>{text}</p>}
+  <div class="es-acts"><slot /></div>
+</div>

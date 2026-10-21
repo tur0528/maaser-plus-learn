@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import Card from '../../components/Card.astro';
+import EmptyState from '../../components/EmptyState.astro';
 import { getCollection } from 'astro:content';
 import { byDateDesc, heDate, visible } from '../../lib';
 const items = (await getCollection('stories')).filter(visible).sort(byDateDesc);
@@ -11,6 +12,6 @@ const items = (await getCollection('stories')).filter(visible).sort(byDateDesc);
     <div class="meta-row"><a class="btn btn-line" href="/stories/submit/">יש לכם סיפור? שלחו אותו</a></div>
   </PageHead>
   <section class="listing"><div class="wrap">
-    {items.length ? <div class="cards">{items.map((s) => <Card href={`/stories/${s.id}/`} title={s.data.title} summary={s.data.summary} tag={s.data.anonymous ? 'בעילום שם' : s.data.author} meta={heDate(s.data.date)} example={s.data.example} />)}</div> : <p class="empty">עדיין אין סיפורים.</p>}
+    {items.length ? <div class="cards">{items.map((s) => <Card href={`/stories/${s.id}/`} title={s.data.title} summary={s.data.summary} tag={s.data.anonymous ? 'בעילום שם' : s.data.author} meta={heDate(s.data.date)} example={s.data.example} />)}</div> : <EmptyState icon="candle" title="סיפורים יעלו בקרוב" text="יש לכם סיפור על נתינה, מעשר או צדקה? שלחו אותו, אפשר גם בעילום שם. כל סיפור נבדק לפני פרסום."><a class="btn btn-em" href="/stories/submit/">לשליחת סיפור</a></EmptyState>}
   </div></section>
 </Base>

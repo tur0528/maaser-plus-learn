@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import AppButton from '../components/AppButton.astro';
 import Card from '../components/Card.astro';
+import EmptyState from '../components/EmptyState.astro';
 import { getCollection } from 'astro:content';
 import site from '../data/site.json';
 import { heDate, byDateDesc, visible } from '../lib';
@@ -73,7 +74,9 @@ const jsonLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'מ
   </div></div></section>
 
   <section class="latest" aria-labelledby="latest-h"><div class="wrap">
-    <div class="sh"><div><span class="eyebrow"><i></i>חדש באתר</span><h2 id="latest-h">מאמרים אחרונים</h2></div><a class="link" href="/articles/">לכל המאמרים</a></div>
-    <div class="cards">{articles.map((a) => <Card href={`/articles/${a.id}/`} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
+    <div class="sh"><div><span class="eyebrow"><i></i>חדש באתר</span><h2 id="latest-h">מאמרים אחרונים</h2></div>{articles.length > 0 && <a class="link" href="/articles/">לכל המאמרים</a>}</div>
+    {articles.length > 0
+      ? <div class="cards">{articles.map((a) => <Card href={`/articles/${a.id}/`} title={a.data.title} summary={a.data.summary} tag={a.data.category} meta={heDate(a.data.date)} example={a.data.example} />)}</div>
+      : <EmptyState icon="book" title="מאמרים יעלו בקרוב" text="הלכות בשפה פשוטה, החזר מס על תרומות ומדריכים מעשיים. בקרוב כאן." />}
   </div></section>
 </Base>

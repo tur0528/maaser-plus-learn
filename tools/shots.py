@@ -2,7 +2,7 @@
 import sys
 from playwright.sync_api import sync_playwright
 base = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:4321'
-pages = {'home': '/', 'article': '/articles/hechzer-mas-al-trumot/', 'article-halacha': '/articles/maaser-ksafim-ma-ze/', 'articles': '/articles/', 'stories': '/stories/', 'story-submit': '/stories/submit/', 'forum': '/forum/', 'forum-topic': '/forum/topic/?id=example-1', 'about': '/about/'}
+pages = {'home': '/', 'articles': '/articles/', 'stories': '/stories/', 'story-submit': '/stories/submit/', 'forum': '/forum/', 'about': '/about/'}
 with sync_playwright() as p:
     b = p.chromium.launch(executable_path='/usr/bin/google-chrome', headless=True)
     for dev, vp, scale in [('desktop', {'width': 1440, 'height': 900}, 1), ('mobile', {'width': 390, 'height': 844}, 2)]:
